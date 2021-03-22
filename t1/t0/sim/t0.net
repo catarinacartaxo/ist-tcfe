@@ -1,0 +1,54 @@
+*
+* NGSPICE simulation script
+* BJT amp with feedback
+*
+
+* forces current values to be saved
+.options savecurrents
+.options savevoltages
+
+*Netlist
+* Fonte tensao independente VA
+VA 1 4 5.0737445952V
+
+*Fonte de corrente independente Id
+Id 8 6 1.04039410163mA
+
+R1 1 2 1.02043025561k 
+R2 3 2 2.0041718511k 
+R3 2 GND 3.090579259k 
+R4 4 GND 4.00562948037k 
+R5 6 GND 3.03133870093k
+R6 9 7 2.06427287006k
+R7 7 8 1.04245638189k
+
+*Fonte de tensao imaginaria de 0V
+Vim 9 4 0V
+
+*Ib - Voltage controlled current source
+GIb 6 3 (2 GND) 7.11526378475mS
+
+*Vc - Current controllet voltage source
+HVc 8 GND Vim 8.01207369538kOhm
+
+
+.control
+op
+
+echo "********************************************"
+echo  "Operating point"
+echo "********************************************"
+
+
+echo  "op_TAB"
+print i(hvc)
+print i(va)
+print all
+echo  "op_END"
+
+
+
+quit
+.endc
+
+.end
