@@ -5,6 +5,8 @@ clear all
 
 pkg load symbolic
 
+%%definir variaveis
+
 R1 = 1.02043025561*1000
 R2 = 2.0041718511*1000
 R3 = 3.090579259*1000
@@ -29,25 +31,30 @@ G67 = (1/(R6+R7))
 Z = 0.0
 um = 1.0
 
-
-
+%%metodo das malhas
 D=[R1+R3+R4,-R3,-R4; -R3,R3-(1/Kb),0; -R4, 0, R4+R6+R7-Kc]
 E=[Va;0;0]
 
+%%resolver o sistema D*I=E para obter as correntes dos loops (F=I)
 F=D\E
 
 Vcm=Kc*F(3)
 Vbm=F(2)/Kb
 
-A = [um,Z,Z,-um,Z,Z,Z;-G1,G1+G2+G3,-G2,Z,Z,Z,Z;Z,-Kb-G2,G2,Z,Z,Z,Z; Z,-Kb,Z,Z,G5,Z,Z;Z,Z,Z,G6,Z,-G6-G7,G7;-G1,G1,Z,-G4-G6,Z,G6,Z;Z,Z,Z,Kc*G6,Z,-Kc*G6,um]
+
+%%metodo dos nos 
+A = [um,Z,Z,-um,Z,Z,Z; -G1,G1+G2+G3,-G2,Z,Z,Z,Z; Z,-Kb-G2,G2,Z,Z,Z,Z; Z,Kb,Z,Z,G5,Z,Z; Z,Z,Z,G6,Z,-G6-G7,G7; -G1,G1,Z,-G4-G6,Z,G6,Z; Z,Z,Z,Kc*G6,Z,-Kc*G6,um]
+
 B = [Va;Z;Z;Id;Z;Z;Z]
 
+%%resolver o sistema A*V=B para obter as voltagens dos nos (C=V)
 C = A\B
 
-Icn = (C(7,1)-C(1,1))*G6
+Icn = (C(6,1)-C(4,1))*G6
 Vcn = Kc*Icn
 Ibn = Kb*C(3,1)
 
+%imprimir a tabela da C num ficheiro
 fid = fopen ("tabelanos_tab.tex", "w")
 fprintf(fid,  "V1 & %0.10f\\\\ \\hline \n", C(1) )
 fprintf(fid,  "V2 & %0.11f\\\\ \\hline \n", C(2) )
@@ -58,22 +65,20 @@ fprintf(fid,  "V7 & %0.11f\\\\ \\hline \n", C(6) )
 fprintf(fid,  "V8 & %0.11f\\\\ \\hline \n", C(7) )
 fclose (fid)
 
-
+%imprimir a tabela da matriz F num ficheiro
 fidf = fopen ("tabelamalhas_tab.tex", "w")
 fprintf(fidf,  "I1 & %0.11f\\\\ \\hline \n", F(1) )
 fprintf(fidf,  "I2 & %0.11f\\\\ \\hline \n", F(2) )
 fprintf(fidf,  "I3 & %0.11f\\\\ \\hline \n", F(3) )
 fclose (fidf)
 
-
+%imprimir a tabela dos nos num ficheiro
 fidcm = fopen ("calculosmalhas_tab.tex", "w")
-
 fprintf(fidcm,  "Vc & %0.10f\\\\ \\hline \n", Vcm )
 fprintf(fidcm,  "I2 & %0.11f\\\\ \\hline \n", Vbm )
-
 fclose (fidcm)
-%VAIS TER QUE ME DIZER
 
+%imprimir a tabela das malhas num ficheiro
 fidcn = fopen ("calculosnos_tab.tex", "w")
 fprintf(fidcn,  "Ic & %0.7f\\\\ \\hline \n", Icn )
 fprintf(fidcn,  "Vc & %0.7f\\\\ \\hline \n", Vcn )

@@ -1,0 +1,80 @@
+*
+* NGSPICE simulation script
+* BJT amp with feedback
+*
+
+* forces current values to be saved
+.options savecurrents
+.options savevoltages
+
+*Netlist
+
+*fonte de tensao
+Vs 1 GND 0.0 ac 1.0 sin(0 1 1k)
+
+R1 1 2 1.02043025561k 
+R2 3 2 2.0041718511k 
+R3 2 5 3.090579259k 
+R4 5 GND 4.00562948037k 
+R5 5 6 3.03133870093k
+R6 9 7 2.06427287006k
+R7 7 8 1.04245638189k
+Vim GND 9 0V
+GIb 6 3 (2 ,5) 7.11526378475mS
+HVd 5 8 Vim 8.01207369538kOhm
+
+.op
+.ic V(6)=7.040227e+00 V(8)=0.0
+.end
+
+*Capacitor
+cC 6 8 1.04039410163u
+
+
+
+.control
+
+.ic ilustrado
+
+set hcopypscolor=1
+set color0=white
+*set color1=black
+*set color2=red
+*set color3=blue
+*set color4=violet
+*set color5=rgb:3/8/0
+*set color6=rgb:4/0/0
+
+op
+*alinea 4
+echo "********************************************"
+echo  "Transiant Analisys"
+echo "********************************************"
+tran 1e-5 20e-3
+
+hardcopy trans4.ps v(6) v(1)
+echo trans4_FIG
+echo "op_END"
+
+*alinea 5
+
+op
+
+echo "********************************************"
+echo  "Frequency analysis"
+echo "********************************************"
+
+ac dec 10 0.1 1MEG
+
+hardcopy mag.ps db(v(1)) db(v(6)) db(v(6)-v(8))
+echo mag_FIG
+
+hardcopy phs.ps vp(1)*180/pi vp(6)*180/pi
+echo phs_FIG
+
+echo "op_END"
+
+quit
+.endc
+
+.end

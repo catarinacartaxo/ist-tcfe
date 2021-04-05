@@ -1,0 +1,37 @@
+
+Circuit: *
+
+.ic: no such command available in ngspice
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+No. of Data Rows : 1
+********************************************
+Transiant Analisys
+********************************************
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+1                                            0
+2                                  9.71361e-13
+3                                  2.97005e-12
+5                                  8.31202e-13
+6                                      7.04023
+9                                            0
+7                                  1.54318e-13
+8                                  2.32248e-13
+hvd#branch                          0.00232248
+vim#branch                         7.47565e-17
+vs#branch                          9.51913e-16
+
+
+No. of Data Rows : 2008
+
+The file "trans.ps" may be printed on a postscript printer.
+trans_FIG
+ngspice-31 done

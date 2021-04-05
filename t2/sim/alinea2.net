@@ -1,0 +1,34 @@
+*
+* NGSPICE simulation script
+* BJT amp with feedback
+*
+
+* forces current values to be saved
+.options savecurrents
+.options savevoltages
+
+*Netlist
+
+Vs 1 GND 0
+
+.include ../mat/valoresini.cir
+
+.include ../mat/datateo1.cir
+
+.control
+op
+
+echo "********************************************"
+echo  "Operating point"
+echo "********************************************"
+
+echo  "op2_TAB"
+print all
+print i(hvd)
+echo  "op2_END"
+
+quit
+.endc
+
+.end
+

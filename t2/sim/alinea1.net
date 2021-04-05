@@ -1,0 +1,36 @@
+*
+* NGSPICE simulation script
+* BJT amp with feedback
+*
+
+* forces current values to be saved
+.options savecurrents
+.options savevoltages
+
+*Netlist
+
+* supply voltage
+Vs 1 GND 5.0737445952
+
+.include ../mat/valoresini.cir
+
+*Capacitor
+cC 6 8 1.04039410163u
+
+
+.control
+op
+
+echo "********************************************"
+echo  "Operating point"
+echo "********************************************"
+
+echo  "op1_TAB"
+print all
+print i(hvd)
+echo  "op1_END"
+
+quit
+.endc
+
+.end

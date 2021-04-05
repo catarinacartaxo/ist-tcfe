@@ -1,0 +1,45 @@
+close all
+clear all
+
+pkg load symbolic
+
+R1 = 1.02043025561*1000
+R2 = 2.0041718511*1000
+R3 = 3.090579259*1000
+R4 = 4.00562948037*1000
+R5 = 3.03133870093*1000
+R6 = 2.06427287006*1000
+R7 = 1.04245638189 *1000
+Vs = 5.0737445952 
+C = 1.04039410163/1000000
+Kb = 7.11526378475/1000
+Kd = 8.01207369538*1000
+G1 = 1/R1
+G2 = 1/R2
+G3 = 1/R3
+G4 = 1/R4
+G5 = 1/R5
+G6 = 1/R6
+G7 = 1/R7
+Z=0
+A = [1,Z,Z,Z,Z,Z,Z;-G1,G1+G2+G3,-G2,-G3,Z,Z,Z;Z,-G2-Kb,G2,Kb,Z,Z,Z;Z,-G3,Z,G3+G4+G5+1/Kd,-G5,Z,-1/Kd;Z,Kb,Z,-Kb-G5,G5,Z,Z;Z,Z,Z,Z,Z,-G6-G7,G7;Z,Z,Z,1,Z,-Kd*G6,-1]
+B = [Vs;Z;Z;Z;Z;Z;Z]
+C = A\B
+
+Vx = C(5,1)-C(7,1) 
+
+D = [Z,Z,Z,Z,1,Z;G6*Kd,Z,Z,-1,Z,-G6*Kd;-G1-G4-G6,G1,Z,G4,Z,G6;Z,G2+Kb,-G2,-Kb,Z,Z;G1,-G1-G2-G3,G2,G3,Z,Z;G6,Z,Z,Z,Z,-G6-G7] 
+E = [Vx;Z;Z;Z;Z;Z] 
+F = D\E 
+Ix = G5*F(5,1)
+Req=Vx/Ix 
+
+
+spice1 = fopen("datateo1.cir","w");
+fprintf(spice1, "Vx 6 8 %f\n", Vx);
+fclose(spice1);
+
+spice2 = fopen("datateo2.cir","w");
+fprintf(spice2, ".param V6=%fe+00\n",F(5,1));
+fprintf(spice2, ".param V8=0.0\n");
+fclose(spice2);

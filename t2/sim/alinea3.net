@@ -1,0 +1,51 @@
+*
+* NGSPICE simulation script
+* BJT amp with feedback
+*
+
+* forces current values to be saved
+.options savecurrents
+.options savevoltages
+
+*Netlist
+
+Vs 1 GND 0
+
+.include ../mat/valoresini.cir
+.include ../mat/datateo2.cir
+
+*Capacitor
+cC 6 8 1.04039410163u
+
+.op
+.ic V(6)=V6 V(8)=V8
+.end
+
+.control
+
+.ic ilustrado
+
+set hcopypscolor=1
+set color0=white
+*set color1=black
+*set color2=red
+*set color3=blue
+*set color4=violet
+*set color5=rgb:3/8/0
+*set color6=rgb:4/0/0
+
+op
+
+echo "********************************************"
+echo  "Transiant Analisys"
+echo "********************************************"
+tran 1e-5 20e-3
+
+hardcopy trans.ps v(6)
+echo trans_FIG
+
+
+quit
+.endc
+
+.end
