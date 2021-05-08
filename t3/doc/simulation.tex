@@ -1,0 +1,60 @@
+\section{Simulation Analysis}
+\label{sec:simulation}
+
+\paragraph{} We obtained the plots of the output of the Envelope Detector,
+
+%grafico Envelope Detector
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.23\textwidth}
+        \includegraphics[width=1.5\linewidth, clip]{../sim/envdect.pdf}
+        \label{fig:PStime}
+    \end{subfigure}
+    \begin{subfigure}{0.23\textwidth}
+        \includegraphics[width=1.5\linewidth, clip]{../mat/vo.pdf}
+        \label{fig:PSciclo}
+    \end{subfigure}
+
+    \caption{\small Graphs of the output of the envelope detector. Simulation on the left, theoretical analysis on the right.}
+    \label{maquina}
+\end{figure}
+
+\paragraph{} the output of the Voltage Regulator
+\vspace{1mm}
+%grafico Voltage Regulator
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.23\textwidth}
+        \includegraphics[width=1.5\linewidth, clip]{../sim/vreg.pdf}
+        \label{fig:PStime}
+    \end{subfigure}
+    \begin{subfigure}{0.23\textwidth}
+        \includegraphics[width=1.5\linewidth, clip]{../mat/envmat.pdf}
+        \label{fig:PSciclo}
+    \end{subfigure}
+
+    \caption{\small Graphs of the output of the voltage regulator. Simulation on the left, theoretical analysis on the right.}
+    \label{maquina}
+\end{figure}
+\vspace{1mm}
+\paragraph{} and the plot of (V0-12) for 10 periods, respectively.
+
+%grafico V0-12
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.23\textwidth}
+        \includegraphics[width=1.5\columnwidth, clip]{../sim/vout.pdf}
+        \label{fig:PStime}
+    \end{subfigure}
+    \begin{subfigure}{0.23\textwidth}
+        \includegraphics[width=1.5\linewidth, clip]{../mat/vo.pdf}
+        \label{fig:PSciclo}
+    \end{subfigure}
+
+    \caption{\small Graphs of v0-12. Simulation on the left, theoretical analysis on the right.}
+    \label{maquina}
+\end{figure}
+
+For this analysis, we substitute the transformer with a current controlled current source ($i1 = n i2$)
+on the left side and with a voltage controlled voltage source ($v2 = n v1$) in wich we definied $n=16.8$ spirals.
+Moreover, all the diodes utilised were default.

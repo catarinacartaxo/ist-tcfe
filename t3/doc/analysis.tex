@@ -1,0 +1,57 @@
+\section{Theoretical Analysis}  \label{sec:analysis}
+
+In order to create an AC/DC converter that converts $230V$ AC to $12V$ DC current,
+the first component we need is a transformer. The transformer converts the $230V$ AC
+power source to a $12V$ AC power source. To calculate the turn ratio $n$ of the primary
+and secondary coils,
+we apply the transformer equation
+
+\begin{equation}
+    \frac{N_p}{N_s} = \frac{V_p}{V_s}
+    \label{transformador}
+\end{equation}
+
+\paragraph{} The next component we need is a diode.
+A diode is a semiconductor device that allows current to flow in one direction, but prevents it
+from flowing in the opposite direction.
+\paragraph{} When current is flowing in reverse biased mode, the diode is
+off, but when it flows in forward biased mode it turns on. Therefore, the diode allows us to convert
+AC into DC. In order to achieve our goal, we decided to use a full wave bridge rectifier.
+
+\paragraph{} We start off by labelling the diodes and the nodes between them, to better explain how
+the circuit transforms AC into DC. At the input, the primary side of the transformer, we have an alternating signal, which can be described by a sine wave.
+\paragraph{}Considering the positive half
+cycle
+of the sine wave, on the secondary side of the transformer, one side  is positive and the other negative.
+Since conventional current flows from high potential to low potential, the current flows from  the
+positive terminal to the negative terminal. Consequently, current flows from the positive terminal
+to point $A$ and then it flows to $D_1$ since it is in forward biased mode. It can't flow from point
+$A$ to point $D$, since $D_4$ is in reverse biased mode and it blocks any current going in that
+direction, unless the voltage is extremely high.
+\paragraph{} Ignoring  everything except the wave bridge
+rectifier and the load resistor, as current flows from $A$ to $B$ through $D_1$, it flows through
+the load resistor and then to point $D$. From $D$, since it makes no sense for current to go back
+to $A$ and make a loop, it goes to $C$ through $D_3$ and from there finally to the  negative terminal.
+That's the flow of current during the positive half cycle of this circuit. Considering the negative
+half cycle of the circuit, the positive and negative terminals switch places and the analysis done
+is pretty similar to the one we made for the positive half cycle.
+\paragraph{} In either case, the current is
+flowing in one direction through the load resistor, from the top to the bottom, and that is the goal,
+to create a DC current. At the output we have a DC voltage that is not constant. Now our goal is to
+take this pulsating DC output and convert it into a steady DC output. One way to do that is to
+introduce a capacitive filter.
+\paragraph{}Consequently, by adding a capacitor parallel to the load resistor
+we can reduce the fluctuations in voltage at  the output. So, instead of having a pulsating DC
+output, the output will more steady with less fluctuations. These fluctuations in the voltage output
+are known as the ripple voltage. By increasing the capacitance of the capacitor, the ripple voltage
+decreases.  It will not be perfectly constant, but it will be fairly steady for the most part.
+\paragraph{}Another thing we have to take into account is the surge current and that is when the capacitor
+is charging. While it is charging, a lot of current will be flowing through the capacitor and wires
+for a short period of time. So to reduce the surge current and prevent the diodes from burning, we
+add a current limiting resistor $R_s$ in series with the wave bridge rectifier and the capacitor.
+The value of $R_s$ has to be so the output voltage is unchanged and remains at 12V
+
+\begin{equation}
+    V_{out} = \frac{R_L}{R_L + R_s} (V_B - V_D)
+    \label{vout}
+\end{equation}

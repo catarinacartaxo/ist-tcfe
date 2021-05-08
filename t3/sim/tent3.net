@@ -1,0 +1,139 @@
+*
+* Low-Pass Filter + Limiter
+*
+
+* forces current values to be saved
+.options savecurrents
+.options savevoltages
+
+*numero espiras
+.param N2=1/16.8
+
+******************************************
+* input voltage source
+Vs 9 GND 0 sin(0 230 50)
+F1 9 GND Vim {N2}
+
+*fonte tensao dep
+E2 1 4 9 GND N2
+
+*fonte tensao imaginaria
+Vim 1 2 0V
+
+*Bridge Rectifier
+Dp1 2 3 Default
+Dp2 4 3 Default
+Dp3 GND 2 Default
+Dp4 GND 4 Default
+
+*Envelope Detector (restantes componentes)
+Rs 3 5 0.42
+CL 5 GND 4m
+RL 5 GND 1.5k
+
+*Rs<<<<<RL
+*maior Rs -> menor V0
+*maior CL -> menor delta V0
+
+
+*Voltage Regulator
+
+D1 5 6 Default
+D2 6 7 Default 
+D3 7 8 Default 
+D4 8 10 Default 
+D5 10 11 Default
+D6 11 12 Default 
+D8 12 13 Default 
+D9 13 14 Default 
+D10 14 15 Default 
+D11 15 16 Default 
+D12 16 17 Default 
+D13 17 18 Default 
+D14 18 19 Default 
+D15 19 20 Default 
+D16 20 21 Default 
+D17 21 22 Default 
+D18 22 GND Default
+
+.model Default D
+.op
+
+.end
+.control
+
+tran 1e-5 200m
+
+*calcular a media da voltagem v0
+meas tran yavg AVG v(5) from=0.160 to=0.180
+
+*calcular a voltagem pico a pico
+meas tran ypp PP v(5) from=0.160 to=0.180
+*print ypp
+
+*calcular ripple max-min
+meas tran ymax MAX v(5) from=0.160 to=0.180
+meas tran ymin MIN v(5) from=0.160 to=0.180
+*print ymax-ymin
+
+*imprimir na tabela
+echo  "opsim_TAB"
+print yavg
+*print ypp
+print ymax-ymin
+echo  "opsim_END"
+
+*merito
+*print 1/((3+1.8+0.4)*(12-yavg+0.000001+ypp))
+
+echo "op_END"
+
+.endc
+.control
+
+set hcopypscolor=1
+set color0=white
+*set color1=black
+*set color2=red
+*set color3=blue
+*set color4=violet
+*set color5=rgb:3/8/0
+*set color6=rgb:4/0/0
+
+******************************************
+* analise no tempo
+echo "********************************************"
+echo  "Transiant Analisys"
+echo "********************************************"
+tran 1e-5 400m 200m
+
+
+*plot voltage output Envelope Detector
+hardcopy envdect.ps v(2)
+echo envdect_FIG
+
+*plot voltage output Voltage Regulator 
+
+hardcopy vreg.ps v(5)
+echo vreg_FIG
+
+*plot v0-12 
+
+hardcopy vout.ps v(5)-12
+echo vout_FIG
+
+echo "op_END"
+
+.endc
+
+
+
+
+
+
+
+
+
+
+
+

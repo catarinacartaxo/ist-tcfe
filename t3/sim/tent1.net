@@ -1,0 +1,69 @@
+*
+* Low-Pass Filter + Limiter
+*
+
+* forces current values to be saved
+.options savecurrents
+
+*1/numero espiras
+.param N2=1/5
+
+******************************************
+* input voltage source
+VS 1 GND 0 sin(0 230 50)
+
+*fonte tensão dep v2
+E2 2 GND 1 GND {N2} 
+
+*fonte imaginaria V0 2 
+Vim 2 9 0V
+
+*fonte corrente dependente da fonte imaginaria
+F1 1 GND Vim {N2}
+
+*Envelope detector
+
+DT1 9 3 Default
+R1 3 GND 1k
+
+* passa-alto ordem 1 a entrada 
+*condensador
+Ci 3 GND 110u
+
+R2 3 4 0.5K
+
+* positive limiter
+Dp1 4 5 Default
+Dp2 5 6  Default
+Dp3 6 7 Default
+Dp4 7 8 Default
+Dp5 8 GND Default
+
+*definir o modelo dos diodos
+.model Default D
+
+.op
+
+*calcular media da voltagem nos nodos v(5) e v(1) desde t=0.04 a t=0.06
+.measure tran yavg AVG v(5) from=0.04 to=0.06
+.measure tran yavg AVG v(1) from=50 to=75+8
+
+
+.end
+
+.control
+
+
+******************************************
+* analise no tempo
+tran 1e-5 0.1
+
+*fazer o grafico
+plot v(4)
+
+
+******************************************
+hardcopy vospice100.ps v(5) 
+* hardcopy vospice400.ps v(1) v(2)
+*ns o que isto é
+.endc

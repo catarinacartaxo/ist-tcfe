@@ -1,0 +1,74 @@
+*
+* Low-Pass Filter + Limiter
+*
+
+* forces current values to be saved
+.options savecurrents
+
+*numero espiras
+.param N2=1/17.2
+
+******************************************
+* input voltage source
+Vs 9 GND 0 sin(0 230 50)
+F1 9 GND Vim {N2}
+
+*fonte tensao dep
+E2 1 GND 9 GND N2
+
+*fonte tensao imaginaria
+Vim 1 6 0V
+
+*diodos
+Dp1 6 3 Default
+Dp2 2 3 Default
+Dp3 GND 1 Default
+Dp4 GND 2 Default
+
+Rs 3 5 1.7
+CL 5 GND 1100u
+RL 5 GND 1.5k
+
+D1 5 7 Default 
+D2 7 8 Default 
+D3 8 10 Default 
+D4 10 11 Default 
+D5 11 12 Default 
+D6 12 13 Default 
+D7 13 14 Default 
+D8 14 15 Default 
+D9 15 16 Default 
+D10 16 17 Default 
+D11 17 18 Default 
+D12 18 19 Default 
+D13 19 20 Default 
+D14 20 21 Default 
+D15 21 22 Default 
+D16 22 23 Default
+D17 23 GND Default
+
+.model Default D
+.op
+
+*calcular a media da voltagem v0
+.measure tran yavg AVG v(5) from=0.100 to=0.120
+*.measure tran yavg AVG v(1) from=50 to=75
+
+*calcular a voltagem pico a pico
+.measure tran ypp PP v(5) from=0.100 to=0.120
+
+.end
+.control
+
+******************************************
+* analise no tempo
+tran 1e-5 200m
+* tran 1e-5 10e-3
+plot v(5)
+
+
+******************************************
+*hardcopy vospice100.ps v(7) 
+* hardcopy vospice400.ps v(1) v(2)
+
+.endc

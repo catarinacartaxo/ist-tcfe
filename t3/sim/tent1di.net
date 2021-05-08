@@ -1,0 +1,95 @@
+*
+* Low-Pass Filter + Limiter
+*
+
+* forces current values to be saved
+.options savecurrents
+
+*numero espiras
+.param N2=1/16.8
+
+******************************************
+* input voltage source
+Vs 9 GND 0 sin(0 230 50)
+F1 9 GND Vim {N2}
+
+*fonte tensao dep
+E2 1 4 9 GND N2
+
+*fonte tensao imaginaria
+Vim 1 2 0V
+
+*Bridge Rectifier
+Dp1 2 3 Default
+Dp2 4 3 Default
+Dp3 GND 2 Default
+Dp4 GND 4 Default
+
+*Envelope Detector (restantes componentes)
+Rs 3 5 0.42
+CL 5 GND 4m
+RL 5 GND 1.5k
+
+*Rs<<<<<RL
+*maior Rs -> menor V0
+*maior CL -> menor delta V0
+
+
+*Voltage Regulator
+
+D1 5 6 Default
+D2 6 GND Default
+.model Default D
+.op
+
+
+
+
+*let someth = v(ymax)
+*print someth
+
+.end
+.control
+
+******************************************
+* analise no tempo
+tran 1e-5 200m
+* tran 1e-5 10e-3
+*plot v(5)
+
+*calcular a media da voltagem v0
+meas tran yavg AVG v(5) from=0.100 to=0.120
+
+*calcular a voltagem pico a pico
+meas tran ypp PP v(5) from=0.100 to=0.120
+print ypp
+
+*calcular ripple max-min
+*meas tran ymax MAX v(5) from=0.100 to=0.120
+*meas tran ymin MIN v(5) from=0.100 to=0.120
+*print ymax
+*print ymin
+*print ymax-ymin
+
+
+plot v(6)
+
+
+
+******************************************
+*hardcopy vospice100.ps v(7) 
+* hardcopy vospice400.ps v(1) v(2)
+
+.endc
+
+
+
+
+
+
+
+
+
+
+
+

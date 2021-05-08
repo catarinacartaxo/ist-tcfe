@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{1 Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{2 Theoretical Analysis}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{2.1 The voltages in all nodes and the currents in all branch for t<0}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{2.2 The equivalent resistance Req}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{2.3 The Natural solution}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{2.4 The Forced solution}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{2.5 The Final Total Solution}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.6}{2.6 The Final Total Solution for frequency range 0.1Hz to 1MHz}{section.2}% 8
+\BOOKMARK [1][-]{section.3}{3 Simulation Analysis}{}% 9
+\BOOKMARK [2][-]{subsection.3.1}{3.1 Node voltage and branch current for t<0}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.2}{3.2 Simulation of the operating point for vs\(0\)=0}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.3}{3.3 Natural response of the circuit}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.4}{3.4 The Final Total Solution}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.5}{3.5 The Final Total Solution for the frequency range 0.1Hz to 1MHz}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{4 Conclusion}{}% 15
