@@ -1,0 +1,81 @@
+\section{Theoretical Analysis}  \label{sec:analysis}
+
+\paragraph{} The configuration we decided to use for the gain stage of the audio amplifier circuit is the
+degenerated common emitter amplifier. The amplifier's power supply is at 12V, whereas the
+input source is just a small signal varying with time (10 mV). Unlike the amplifier's power supply
+it doesn't have a DC component. Therefore, if we connect the source directly into the
+input of the amplifier there will be a problem because there will not be enough voltage
+for the base emitter junction (BEJ) to be forwardly biased. If the BEJ is not forwardly
+biased the transistor is in the off state, it doesn't conduct current.
+\paragraph{} Consequently, we must find a way to ensure the transistor is always conducting while handling the low
+input signal. What we need is a coupling capacitor that works as a DC block, it separates the DC
+component at the base of the transistor and the DC component at the input, which is
+most likely zero. It allows the transistor to operate at its preferred point and not be
+disturbed by the input. Therefore, it has to be quite the large capacitor because it has
+to block frequency zero (DC).
+\paragraph{} In fact, VS can have any DC component because the capacitor
+works as a highpass filter, it only lets through frequencies higher than a certain value.
+Therefore, it blocks some low frequencies, which is
+one of the reasons why amplifiers struggle with lower cutoff frequencies. So, besides the
+coupling capacitor, we also need a bias circuit. The bias circuit connects two resistors
+RB1 and RB2 in series to a DC voltage source VCC so that by voltage dividision we get
+a suitable DC voltage
+going in to the base of the transistor, so that it is conducting. It is also very important
+that the transistor is in the forward active region so that it has a high current gain.
+It cannot be saturated and it cannot be in the cutoff state, it must be up and running.
+
+\subsection{Operating Point Analysis}
+\paragraph{} In order to analyse this circuit, we start off with operating point (OP) analysis. In order to get rid of the complexity of the bias circuit, we can do a simple modification by using the Thévenin's equivalent of the bias circuit. Since we are doing OP analysis, we can ignore the input voltage source and the capacitor. The removal of the capacitor results in an open circuit so we can remove it and just consider the bias circuit and the transistor. In order to get the Thévenin's equivalent of the bias circuit we “position” ourselves on the node connected to the base of the transistor and realise that resistors $R_{B1}$ and $R_{B2}$ can be put in parallel. Then, the voltage at that point will be the equivalent voltage given by
+
+\begin{center}
+    \begin{equation}
+        V_{eq} = - \frac{R_{B2}}{(R_{B1} + R_{B2}) V_{CC}}
+    \end{equation}
+\end{center}
+
+
+$R_{eq}$ is given by $(R_{B1} R_{B2} ) / (R_{B1} + R_{B2})$. In order to compute the current going into the base of the transistor $I_{B}$ we run mesh analysis and get
+
+\begin{center}
+    \begin{equation}
+        V_{eq} + R_{eq} I_{B} + V_{BEON} + R_{E} I_{E} = 0
+    \end{equation}
+\end{center}
+
+We can consider that $V_{BEON} = 0.7 V$ when the BE junction is forwardly biased, like we did for the diode, especially when we have a base resistor, which is the case. Given that the transistor is in the forward active region, we know that  $I_{E} = (1+ \beta_F) I_B$, where $\beta_F$ is the forward current gain. Therefore, we can replace $I_E$ in the initial expression and we get
+
+\begin{center}
+    \begin{equation}
+        I_{B} = \frac{(V_{eq} + V_{BEON}}{R_B + (1+\beta_F) R_E}
+    \end{equation}
+\end{center}
+
+
+With the value of $I_B$ we can compute the values of $I_E$ and $I_C = \beta_F I_B$.
+
+\paragraph{} Having at these values and applying mesh analysis to the other mesh we get that the static output voltage is
+\begin{center}
+    \begin{equation}
+        V_O = V_{CC} – R_C I_C
+    \end{equation}
+\end{center}
+
+The voltage at the emitter is given by $V_E = R_E I_E$. In order to confirm that the transistor is working in the forward active region (FAR) we compute $V_{CE}$, the voltage between the collector and the emitter, given by $V_{CE} = V_O - V_E$. If the value of $V_{CE}$ is greater than $V_{BEON}$ then the transistor is working in the FAR.
+
+
+\subsection{Incremental Analysis}
+
+Moving onto the incremental analysis of the circuit, we only consider the resistors, the capacitors and the incremental components of voltage and current. The coupling capacitor vanishes since we are working at medium frequencies, at which the capacitor is already a short circuit. The transistor is caracterized by 3 incremental parameters: resistor $r_\pi$ between base and emitter, transconductance $g_m$ between collector and emitter and output impedance of the transistor $r_o$ between the collector and emitter, given by
+
+\begin{equation}
+    g_m = \frac{I_C}{ V_T}
+\end{equation}
+
+\begin{equation}
+    r_\pi = \beta_F / g_m
+\end{equation}
+
+\begin{equation}
+    r_o \approx V_A/I_C
+\end{equation}
+

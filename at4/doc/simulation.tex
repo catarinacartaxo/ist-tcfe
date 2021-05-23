@@ -1,0 +1,72 @@
+\section{Simulation Analysis}
+\label{sec:simulation}
+
+Starting with the analysis of the oeprating point OP we obtain the following results.
+%comparar tabela OP
+
+\begin{table}[!htb]
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \caption{Simulation Analysis}
+        \begin{tabular}{|l|l|}
+            \hline
+            {\bf Name} & {\bf Value [A or V]} \\ \hline
+            \input{../sim/opsim_tab}
+        \end{tabular}
+        \label{tab:tabela4}
+    \end{minipage}%
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \caption{Theoretical Analysis}
+        \begin{tabular}{|l|l|}
+            \hline
+            {\bf Name} & {\bf Value [A or V]} \\ \hline
+            \input{../mat/op1teo}
+            \input{../mat/op2teo}
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+\paragraph{} Moving on to the next step, we obtain the input and output impedances and the gain.
+The results are showed below
+%comparar tabela GAIN ZI ZO
+
+\begin{table}[!htb]
+    \begin{minipage}{.5\linewidth}
+        \centering
+        \caption{Simulation Analysis}
+        \begin{tabular}{|l|l|}
+            \hline
+            {\bf Name} & {\bf Value [A or V]} \\ \hline
+            \input{../sim/acsim_tab}
+        \end{tabular}
+        \label{tab:tabela4}
+    \end{minipage}
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \caption{Theoretical Analysis}
+        \begin{tabular}{|l|l|}
+            \hline
+            {\bf Name} & {\bf Value [A or V]} \\ \hline
+            \input{../mat/inc1teo}
+            \input{../mat/inc2teo}
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+As we can see it is very obvious that the results of the voltages and currents are quite similar. Also
+the gain and the impedances are quite similar to what is expected. The results were very good overall.
+%comparar graficos GAIN
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.25\textwidth}
+        \includegraphics[width=\linewidth, clip]{../sim/totalgain.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.25\textwidth}
+        \includegraphics[width=\linewidth, clip]{../mat/vovi.pdf}
+    \end{subfigure}
+    \caption{\small Representation of Vo(f)/Vi(f) in a logarithmic scale. }
+\end{figure}
+
+The graphics are very similar to each other so we can conclude that the results are good.
