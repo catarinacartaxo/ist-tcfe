@@ -1,0 +1,132 @@
+\section{Theoretical Analysis}
+\label{sec:analysis}
+
+In this section we are going to theorically analyse the following circuit that was already showed.
+
+The circuit is divided in 3 parts: the High Pass Filter Stage, the Amplifier Stage and the Low Pass Filter Stage, each with a different purpose. Their goal is to block out low frequencies, amplify the voltage signal and block out high frequencies, respectivelly.
+Moreover, the OP AMP is implemented in the circuit in a non-inverting configuration. This way, the circuit acts as an Active Non-inverting OP AMP Bandpass Filter.\par
+Firstly, we proceed to compute the input and output impedances, as well as the gain of the circuit.
+
+\subsection{Input and Output Impedances}
+
+The input impedance is computed as:
+\begin{equation}
+    Z_{I}=\left.\frac{V_{i}}{I_{i}}\right\vert_{Z_L=\infty}
+\end{equation}
+where $Z_{L}$ is the load impedance and $I_i$ is the current that passes through the voltage source $V_i$. Since no current enters an OP AMP (in the $+$ and $-$ terminals, since it's input impedance is $\infty$), this leaves us with a capacitor in series with a resistor.
+Therefore, the input impedance is:
+
+\begin{equation}
+    Z_{I}=\frac{1}{jwC_1}+R_1
+\end{equation}
+
+The output impedance is computed as:
+
+\begin{equation}
+    Z_{O}=\left.\frac{V_{o}}{I_{o}}\right\vert_{V_i=0}
+\end{equation}
+Once again, since no current enters an OP AMP and $V_i=0$, then $V_{+}=V_{-}=0$  and we are left with capacitor $C_2$ in series with a parallel of resistor $R_4$ and capacitor $C_3$.
+Thus, the output impedance is given by:
+
+\begin{equation}
+    Z_{O}=\frac{1}{\frac{1}{R_4}+jwC_2}
+\end{equation}
+
+
+
+\subsection{Gain}
+
+To compute the gain, we can divide the problem in 3 parts. Starting with the High Pass Filter Stage and using a Voltage Divider, we get:
+
+\begin{equation}
+    V_{+}=\frac{R_1}{R_1+\frac{1}{jwC_1}}V_i
+    \label{Eq:V+}
+\end{equation}
+
+With this expression for $V_{+}$ we can already see the purpose of this part of the circuit. As the name suggests, for high frequencies $V_{+}$ $\to$ $V_i$ and for low frequencies $V_{+}$ $\to$ $0$.
+Hence, the High Pass Filter Stage blocks the signals with low frequencies.
+
+Now, moving on to the amplifier stage, by inspection we see that $V_A=V_{-}+R_2I_2$, where $I_2=I_3=(V_{-}-0)/R_3$. So, we get:
+
+\begin{equation}
+    V_A=V_{-}+R_2\frac{V_{-}}{R_3}  \equiv V_A = (1+\frac{R_2}{R_3})V_{-}
+    \label{Eq:Va}
+\end{equation}
+
+This expression unfolds the amplifying properties of this part. The greater $R_2$ is compared to $R_3$, the greater $V_A$ will be. \par
+
+Lastly, we move onto the Low Pass Filter Stage. Using voltage dividir:
+
+\begin{equation}
+    V_o=\frac{\frac{1}{jwC_2}}{\frac{1}{jwC_2}+R_4}V_a
+    \label{Eq:Vo}
+\end{equation}
+
+This expression explain the name Low Pass Filter Stage. For low frequencies $V_o$ $\to$ $V_a$, but for high frequencies $V_o$ $\to$ $0$.\par
+
+Now, using equations (\ref{Eq:V+}) , (\ref{Eq:Va}) and (\ref{Eq:Vo}) and recalling that $V_{+}=V_{-}$, the gain is given by:
+\begin{equation}
+    \frac{V_o(\omega)}{V_i(\omega)}=\Bigg( \frac{R_1}{R_1+\frac{1}{j\omega C_1}}   \Bigg) \Bigg( 1+\frac{R_2}{R_3}  \Bigg) \Bigg( \frac{\frac{1}{jwC_2}}{\frac{1}{jwC_2}+R_4} \Bigg)
+\end{equation}
+
+
+\subsection{Low Cut-Off Frequency, High Cut-Off Frequency, and Central Frequency}
+In this section we analyse the methods used to determine the Low Cut-Off Frequency (LCF), the High Cut-Off Frequency (HCF), and the Central Frequency.\\
+By definition the LCF and HCF are defined by the values of frequency from and to which, respectively, the gain at said frequency is greater or equal than the maximum gain divided by $\sqrt{2}$, which is equivalent to a gain 3dB lower than the maximum gain.
+The central frequency can be obtained by applying the geometric mean to the LCF and HCF:
+
+
+\begin{equation}
+    CF=\sqrt{HCF\, \times \, LCF}
+    \label{Eq:freq_cental}
+\end{equation}
+
+\subsection{Theoretical results and comparison}
+
+With the help of \textit{Octave} we plotted the gain as a function of the frequency $f=w/(2\pi)$. The following figure shows the frequency response from the theoretical analysis compared with the one we got from the simulation:
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../mat/gain.pdf}
+        \caption{\textit{Octave}'s gain frequency response}
+        \label{fig:Ngspicegain(f)}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.8\linewidth]{../sim/vdbo.pdf}
+        \caption{\textit{Ngspice}'s gain frequency response}
+        \label{fig:Ngspicegain(f)}
+    \end{subfigure}
+    \caption{Side-by-side comparison of \textit{Ngspice}'s and \textit{Octave}'s frequency response}
+    \label{fig:Gaincomparison}
+\end{figure}
+
+The table below presents the key results from the theoretical analysis alongside their simulation counterparts and their respective errors assuming ngspice's results as the exact results.
+
+\begin{table}[!htb]
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \caption{Theoretical Analysis}
+        \begin{tabular}{|l|l|}
+            \hline
+            {\bf Name} & {\bf Value [A or V]} \\ \hline
+            \input{../mat/resultstable.tex}
+        \end{tabular}
+        \label{tab:tabela4}
+    \end{minipage}%
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        \caption{Simulation Analysis}
+        \begin{tabular}{|l|l|}
+            \hline
+            {\bf Name} & {\bf Value [A or V]} \\ \hline
+            \input{../sim/acsim_tab}
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+\paragraph{} As we can see the results were very similar in both the simulation and the theoretical
+analysis.

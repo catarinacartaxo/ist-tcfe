@@ -1,0 +1,145 @@
+  *-----------------------------------------------------------------------------
+*
+* To use a subcircuit, the name must begin with 'X'.  For example:
+* X1 1 2 3 4 5 uA741
+*
+* connections:   non-inverting input
+*                |  inverting input
+*                |  |  positive power supply
+*                |  |  |  negative power supply
+*                |  |  |  |  output
+*                |  |  |  |  |
+.subckt uA741    1  2  3  4  5
+*
+  c1   11 12 8.661E-12
+  c2    6  7 30.00E-12
+  dc    5 53 dx
+  de   54  5 dx
+  dlp  90 91 dx
+  dln  92 90 dx
+  dp    4  3 dx
+  egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+  fb    7 99 poly(5) vb vc ve vlp vln 0 10.61E6 -10E6 10E6 10E6 -10E6
+  ga    6  0 11 12 188.5E-6
+  gcm   0  6 10 99 5.961E-9
+  iee  10  4 dc 15.16E-6
+  hlim 90  0 vlim 1K
+  q1   11  2 13 qx
+  q2   12  1 14 qx
+  r2    6  9 100.0E3
+  rc1   3 11 5.305E3
+  rc2   3 12 5.305E3
+  re1  13 10 1.836E3
+  re2  14 10 1.836E3
+  ree  10 99 13.19E6
+  ro1   8  5 50
+  ro2   7 99 100
+  rp    3  4 18.16E3
+  vb    9  0 dc 0
+  vc    3 53 dc 1
+  ve   54  4 dc 1
+  vlim  7  8 dc 0
+  vlp  91  0 dc 40
+  vln   0 92 dc 40
+.model dx D(Is=800.0E-18 Rs=1)
+.model qx NPN(Is=800.0E-18 Bf=93.75)
+.ends
+
+
+
+.options savecurrents
+.options savevoltages
+
+Vcc vcc 0 5
+Vee vee 0 -5
+Vin in 0 0 ac 1.0 sin(0 10m 1k)
+
+X1 plusop minus vcc vee ampo uA741
+*fonte imaginaria para medir corrente no +
+Vimop plus plusop 0V
+
+*que vem do -
+R2 minus ampo 100k
+R3 minus 0 1k
+
+
+*que vem do +
+R1 plus 0 1k
+C1 in plus 220n
+
+*que vem do out
+R4 ampo out 1k
+C2 out 0 220n
+
+
+* load
+RL out outr 8
+*fonte im para medir io
+Vimr out outr 0V
+
+.op
+.end
+
+.control
+
+op
+
+
+* time analysis
+tran 1e-5 1e-2
+plot v(out)
+
+* frequency analysis
+ac dec 10 1 100MEG
+plot vdb(out)
+hardcopy vdbo.ps vdb(out)
+echo vdbo_FIG
+
+
+*calcular offset
+meas ac peak MAX vdb(out) FROM=100 TO=1MEG
+let cutoff = peak-3
+meas ac f1 WHEN vdb(out)=cutoff RISE=1
+meas ac f2 WHEN vdb(out)=cutoff FALL=1
+let centralfq = (f2+f1)/2
+print centralfq
+
+*calculo do ganho
+let gainf= vdb(out)-vdb(in)
+*gain maximo
+meas ac gain FIND gainf AT=centralfq
+*print gain
+
+*cost
+let Rcost=110+1.5+10+10
+let Ccost=1+1+1
+let cost=Rcost+Ccost+13322.8
+
+
+*merito
+let mer=abs(1/(cost*(40-gain)*(1000-centralfq)))
+print mer
+
+
+*input impedance in kohm
+let zi=abs(v(plus)[40]/vimop#branch[40]/1000)
+
+*output impedance in kohm
+let zo=abs(v(out)[40]/vimr#branch[40]/1000)
+
+
+echo "acsim_TAB"
+print centralfq
+print gain
+print zi
+print zo
+echo "acsim_END"
+
+echo "mer_TAB"
+print mer
+echo "mer_END"
+
+*quit
+.endc
+
+.end

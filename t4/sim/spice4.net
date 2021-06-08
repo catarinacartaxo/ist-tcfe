@@ -98,35 +98,40 @@ let cutoff = peak-3
 meas ac f1 WHEN vdb(out)=cutoff RISE=1
 meas ac f2 WHEN vdb(out)=cutoff FALL=1
 let bandwidth = f2-f1
-*print bandwidth
+print bandwidth
 
 *calcualte merith
 let Rcost=0.1+75+15+0.84+0.075+0.075+0.008
 let Ccost=(3+2+2)*1000
-let Tcost=2
+let Tcost=0.2
 let cost=Rcost+Ccost+Tcost
+print cost
 
-*print mer
 let gainf= vdb(out)-vdb(in2)
 *plot gainf
 hardcopy totalgain.ps vdb(out)-vdb(in2)
 echo totalgain_FIG
 
-
+*gain maximo
 meas ac gain MAX gainf FROM=10 TO=1MEG
+
+*calculo merito
+let merith=gain*bandwidth/(cost*f1)
+print merith
+
 
 let zi=abs(v(in2)[40]/vin#branch[40]/(-1000))
 *plot zi
 *print v(in2)[40]/vin#branch[40]/(-1000)
 
-let z0=abs(v(out)[40]/vim#branch[40]/(-1000))
-*plot z0
+let zo=abs(v(out)[40]/vim#branch[40]/(-1000))
+*plot zo
 *print v(out)[40]/vim#branch[40]/(-1000)
 
 echo "acsim_TAB"
 print gain
 print zi
-print z0
+print zo
 echo "acsim_END"
 
 *need a different setup to measure output impedance
